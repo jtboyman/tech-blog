@@ -3,6 +3,7 @@ const routes = require('./controllers/');
 const sequelize = require('./config/connection'); //import connection to Sequelize
 const path = require('path');
 const helpers = require('./utils/helpers');
+require('dotenv').config();
 
 const exphbs = require('express-handlebars');
 const hbs = exphbs.create({helpers}); //summon the helpers
@@ -11,8 +12,8 @@ const hbs = exphbs.create({helpers}); //summon the helpers
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const sess = {
-    secret: 'Super secret secret',
-    cookie: {},
+    secret: process.env.COOKIE_SECRET,
+    cookie: {maxAge: 30*60000},
     resave: false,
     saveUninitialized: true,
     store: new SequelizeStore({
@@ -43,7 +44,7 @@ app.use(routes);
 //turn on connection to db and server
 //sync means take models and connect to associated db tables
 //will create a table for you if it doesnt find one
-sequelize.sync({ force: true }).then(() => { //true is basically DROP TABLE IF EXISTS
+sequelize.sync({ force: false }).then(() => { //true is basically DROP TABLE IF EXISTS
     app.listen(PORT, () => console.log('Now listening'));
 });
 

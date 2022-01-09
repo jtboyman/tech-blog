@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
     Post.findAll({
         attributes: [//choose what we want
             'id',
-            'post_url',
+            'post_content',
             'title',
             'created_at'
         ], 
@@ -47,7 +47,7 @@ router.get('/:id', (req, res) => {
         },
         attributes: [
             'id',
-            'post_url',
+            'post_content',
             'title',
             'created_at'
         ],
@@ -82,11 +82,11 @@ router.get('/:id', (req, res) => {
 
 //create a post
 router.post('/', withAuth, (req, res) => {
-    //expects {title: 'Post Title', post_url: 'http url blah', user_id: 1(any integer)}
+    //expects {title: 'Post Title', post_content: 'my post lalala', user_id: 1(any integer)}
     Post.create({ //req.body is the request from the user and has these properties
         //req.body populates the post table
         title: req.body.title,
-        post_url: req.body.post_url,
+        post_content: req.body.post_content,
         // /api/posts endpoint requires user ID from the currecnt session:
         user_id: req.session.user_id
     })
@@ -101,7 +101,8 @@ router.post('/', withAuth, (req, res) => {
 router.put('/:id', withAuth, (req, res) => {
     Post.update(
         {
-            title: req.body.title
+            title: req.body.title,
+            post_content: req.body.post_content
         },
         {
             where: {
