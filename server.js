@@ -12,7 +12,7 @@ const hbs = exphbs.create({helpers}); //summon the helpers
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const sess = {
-    secret: process.env.COOKIE_SECRET,
+    secret: 'secret time hehehe',
     cookie: {maxAge: 30*60000},
     resave: false,
     saveUninitialized: true,
